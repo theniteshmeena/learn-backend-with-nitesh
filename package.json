@@ -1,0 +1,12 @@
+{
+  "name": "niteshandbackend",
+  "version": "1.0.0",
+  "description": "Nitesh Learning the backend technology ",
+  "license": "ISC",
+  "author": "Nitesh Kumar Meena",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
