@@ -3,9 +3,10 @@ import { ApiError } from "../utils/ApiError.js";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
 
-export const verifyJWT = asyncHandler(async (req, res) => {
+export const verifyJWT = asyncHandler(async (req, res, next) => {
     try {
-        const token = req.cookies?.accessToken || req.headers("Authorization")?.replace("Bearer ", "") || null;
+        // const token = req.cookies?.accessToken || req.headers("Authorization")?.replace("Bearer ", "") || null;
+        const token = req.cookies?.accessToken || req.headers.authorization?.replace("Bearer ", "");
 
             if(!token) {
                 throw new ApiError(401, "Unauthorized Request");
@@ -20,7 +21,7 @@ export const verifyJWT = asyncHandler(async (req, res) => {
             }
 
             req.user = user;
-            
+            next();
     } catch (error) {
         throw new ApiError(401, error?.message || "Unauthorized Request");
     }
