@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import {ApiError} from "../utils/ApiError.js";
 import {User} from "../models/user.model.js";
@@ -151,8 +152,8 @@ const logoutUser = asyncHandler(async (req, res) => {
     // get user id from req.user
 await User.findByIdAndUpdate(
     req.user._id, 
-        { $set: { 
-            refreshToken: undefined 
+        { $unset: { 
+            refreshToken: 1 // this removes the refreshToken field from the user document in the database, effectively logging the user out by invalidating their refresh token 
         } 
     }, 
     { 
@@ -235,9 +236,9 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 
 const updateAccountDetails = asyncHandler(async (req, res) => {
 
-    const { fullName, username, email } = req.body || {};
-
-    if(!fullName && !email) {
+    const { fullName, email } = req.body || {};
+    
+    if(!(fullName || email)) {
         throw new ApiError(400, "At least one field is required to update");
     }
 
